@@ -67,7 +67,7 @@ export class AppComponent implements OnInit{
 
 
   ngOnInit(): void {
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 1; i++) {
       this.AddItem();
     }
   }
@@ -187,6 +187,7 @@ export class AppComponent implements OnInit{
     // Add items data to the table
     formData.items.forEach((item:any) => {
       itemsTable.table.body.push([item.item, item.quantity, item.price, item.amount]);
+      itemsTable.table.body.push(['','','Subtotal','$ 0.00'])
     });
 
     content.push(itemsTable,);
