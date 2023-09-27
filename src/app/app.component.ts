@@ -81,73 +81,6 @@ export class AppComponent implements OnInit {
     }
   }
 
-  // HandleSubmit(){
-  //   const itemsArray = this.invoiceForm.get('items') as FormArray;
-  //   itemsArray.markAllAsTouched();
-
-  //   if(this.invoiceForm.invalid){
-  //     this.markFormGroupTouched(this.invoiceForm);
-  //     return
-  //   }
-
-  //   const formData = this.invoiceForm.value;
-  //   const content = [
-  //     // Add your content here, e.g., headers, form data, etc.
-  //     { text: 'Invoice Form', style: 'header' },
-  //     { text: `Your Name/Business Name: ${formData.owner_name}`,style:'owner_name' },
-  //     { text: `Your Address: ${formData.owner_address}` },
-  //     { text: `Your Phone number: ${formData.owner_phone}` },
-  //     { text: `Your email: ${formData.email}` },
-  //     { text: 'Bill to:', style: 'sub_header' },
-  //     {
-  //       columns: [
-  //         {
-  //           width: '50%',
-  //           text: 'This is the content of the first column.',
-  //         },
-  //         {
-  //           width: '50%',
-  //           text: 'This is the content of the second column.',
-
-  //         },
-  //       ],
-
-  //     },
-  //     {
-  //       style: "tableExample",
-  //       table: {
-  //         body: [
-  //           ["Item", "Quantity", "Price per unit", "Amount"],
-  //           ['000', "Another one here", "OK?","000"]
-  //         ]
-  //       }
-  //     }
-
-  //   ];
-
-  //   const docDefinition: any = {
-  //     content: content,
-  //     styles: {
-  //       header: {
-  //         fontSize: 18,
-  //         bold: true,
-  //         margin: [0, 0, 0, 10],
-  //       },
-  //       sub_header:{
-  //         margin: [0, 10, 0, 4],
-  //         bold: true,
-  //         fontWeight:700
-  //       }
-
-  //     },
-  //   };
-
-  // const pdfDoc = pdfMake.createPdf(docDefinition);
-
-  // // Open the PDF in a new tab
-  // pdfDoc.open();
-
-  // }
   HandleSubmit() {
     const itemsArray = this.invoiceForm.get('items') as FormArray;
     itemsArray.markAllAsTouched();
@@ -158,6 +91,7 @@ export class AppComponent implements OnInit {
     }
 
     const formData = this.invoiceForm.value;
+    const boldStyle = { bold: true };
 
     // Create an array to store all the content
     const content = [
@@ -173,36 +107,36 @@ export class AppComponent implements OnInit {
       },
       {
         text: `Your Address: ${formData.owner_address}`,
-        style: 'owner_address',
+        style: 'owner_name',
       },
       {
         text: `Your Phone number: ${formData.owner_phone}`,
-        style: 'owner_address',
+        style: 'owner_name',
       },
       { text: `Your email: ${formData.owner_email}`, style: 'owner_address' },
       { text: 'Bill to:', style: 'sub_header' },
       {
         text: `Buyer Name/Business Name: ${formData.buyer_name}`,
-        style: 'owner_address',
+        style: 'owner_name',
       },
       {
         text: `Buyer Address: ${formData.buyer_address}`,
-        style: 'owner_address',
+        style: 'owner_name',
       },
       {
         text: `Buyer Phone number: ${formData.buyer_phone}`,
-        style: 'owner_address',
+        style: 'owner_name',
       },
-      { text: `Buyer email: ${formData.buyer_email}`, style: 'owner_address' },
+      { text: `Buyer email: ${formData.buyer_email}`, style: 'owner_name' },
       {
         text: `Invoice number: ${formData.invoice_number}`,
-        style: 'owner_address',
+        style: 'owner_name',
       },
       {
         text: `Invoice date: ${formData.invoice_date}`,
-        style: 'owner_address',
+        style: 'owner_name',
       },
-      { text: `Payment due: ${formData.payment_due}`, style: 'owner_address' }
+      { text: `Payment due: ${formData.payment_due}`, style: 'owner_name' }
     );
 
     // Add table for items
@@ -211,7 +145,12 @@ export class AppComponent implements OnInit {
       style: 'tableExample',
       table: {
         widths: ['*', '*', '*', '*'],
-        body: [['Item', 'Quantity', 'Price per unit', 'Amount']],
+        body: [[
+          { text: "Item", style: 'tableHeader' },
+          { text: "Quantity", style: 'tableHeader' },
+          { text: "Price per unit", style: 'tableHeader' },
+          { text: "Amount", style: 'tableHeader' }
+        ]],
       },
     };
 
@@ -225,10 +164,30 @@ export class AppComponent implements OnInit {
       ]);
     });
 
-    itemsTable.table.body.push(['', '', 'Subtotal', '$0.00']);
-    itemsTable.table.body.push(['', '', 'Tax 0.00%', '$0.00']);
-    itemsTable.table.body.push(['', '', 'Fees/discounts', '$0.00']);
-    itemsTable.table.body.push(['', '', 'TOTAL', '$0.00']);
+    itemsTable.table.body.push([
+      { text: '', style: 'boldText' },
+      { text: '', style: 'boldText' },
+      { text: 'Subtotal', style: 'boldText' },
+      { text: '$0.00', style: 'boldText' },
+    ]);
+    itemsTable.table.body.push([
+      { text: '', style: 'boldText' },
+      { text: '', style: 'boldText' },
+      { text: 'Tax 0.00%', style: 'boldText' },
+      { text: '$0.00', style: 'boldText' },
+    ]);
+    itemsTable.table.body.push([
+      { text: '', style: 'boldText' },
+      { text: '', style: 'boldText' },
+      { text: 'Fees/discounts', style: 'boldText' },
+      { text: '$0.00', style: 'boldText' },
+    ]);
+    itemsTable.table.body.push([
+      { text: '', style: 'boldText' },
+      { text: '', style: 'boldText' },
+      { text: 'TOTAL', style: 'boldText' },
+      { text: '$0.00', style: 'boldText' },
+    ]);
 
     // content.push(itemsTable);
     content.push({...itemsTable });
@@ -249,6 +208,17 @@ export class AppComponent implements OnInit {
         tableExample: {
           margin: [0, 5, 0, 15],
         },
+        owner_name:{
+          margin:[0, 0, 0,5]
+        },
+        boldText: {
+          bold: true
+        },
+        tableHeader: {
+          fillColor: '#AAAAAA',
+          color: 'white',
+          bold: true
+        }
       },
     };
 
